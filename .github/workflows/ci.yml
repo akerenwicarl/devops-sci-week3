@@ -1,0 +1,25 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7          # notes use @v4 - also still works
+      - name: Set up Python
+        uses: actions/setup-python@v6      # notes use @v5 - also still works
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run unit tests
+        run: python -m pytest tests/
+      - name: Run regression test
+        run: python scripts/run_regression.py

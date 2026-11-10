@@ -1,0 +1,15 @@
+stages:
+  - test
+
+test_python:
+  stage: test
+  image: python:3.11
+  script:
+    - pip install -r requirements.txt
+    # --junitxml is needed, otherwise junit-report.xml is never created
+    - python -m pytest tests/ --junitxml=junit-report.xml
+    - python scripts/run_regression.py
+  artifacts:
+    when: always            # keep the report even when tests fail
+    reports:
+      junit: junit-report.xml
